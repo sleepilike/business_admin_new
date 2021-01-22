@@ -1,13 +1,9 @@
-import 'dart:js';
 
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:registration_admin/data/apply_state_model.dart';
-import 'package:registration_admin/data/monitor_state_model.dart';
 import 'package:registration_admin/data/user_state_model.dart';
 import 'package:registration_admin/entity/apply_entity.dart';
-import 'package:registration_admin/entity/worker_entity.dart';
 import 'package:registration_admin/ui/mainwidget/detail.dart';
 import 'package:registration_admin/ui/widget/non_register_widget.dart';
 

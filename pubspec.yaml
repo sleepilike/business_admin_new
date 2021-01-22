@@ -22,15 +22,15 @@ dependencies:
   flutter_localizations: #时间控件中文化
     sdk: flutter
   dio: ^3.0.8
-  intl: ^0.16.1
+  intl: ^0.17.0-nullsafety.2
   provider: ^4.0.0 # 跨界面管理state
   shared_preferences: ^0.5.6
   date_format: ^1.0.6
-  bot_toast: any
+  bot_toast: ^3.0.5
   url_launcher: ^5.4.1
   city_pickers: ^0.1.30
   smart_select: ^3.0.3
-  flutter_cupertino_date_picker: ^1.0.2
+  flutter_datetime_picker: ^1.4.0
 
 
 
