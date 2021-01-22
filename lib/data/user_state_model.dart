@@ -29,9 +29,9 @@ class UserStateModel extends ChangeNotifier {
     }
   }
 
-  Future login(String account, String password) async {
+  Future login(String identityID) async {
     try {
-      _user = await _repository.login(account, password);
+      _user = await _repository.login(identityID);
       notifyListeners();
       return Future.value();
     } catch (error) {

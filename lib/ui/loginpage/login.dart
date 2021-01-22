@@ -27,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
   var _userPassController = new TextEditingController();
   var _useNameController = new TextEditingController();
 
+  var _identityIDController = new TextEditingController();
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget build(BuildContext context) {
@@ -58,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: new EdgeInsets.fromLTRB(
                             10.0, 50.0, leftRighthRadding, 10.0),
                         child: Text(
-                          "管理员登录",
+                          "审核端登录",
                           style:
                           TextStyle(color: Colors.black, fontSize: 30.0),
                         ),
@@ -74,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                                 validator: (v) =>
                                 strNoEmpty(v) ? null : '用户名不能为空',
                                 style: hintTips,
-                                controller: _useNameController,
+                                controller: _identityIDController,
                                 decoration: InputDecoration(
                                   labelText: '请输入用户名',
                                   hintText: '您的用户名',
@@ -87,25 +89,6 @@ class _LoginPageState extends State<LoginPage> {
                                 obscureText: false,
                               ),
                             ),
-                            Padding(
-                              padding: new EdgeInsets.fromLTRB(leftRighthRadding,
-                                  10.0, leftRighthRadding, topBottomPadding),
-                              child: TextFormField(
-                                validator: (v) => strNoEmpty(v) ? null : '密码不能为空',
-                                style: hintTips,
-                                controller: _userPassController,
-                                decoration: new InputDecoration(
-                                  hintText: "请输入密码",
-                                  labelText: '请输入密码',
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 13,
-                                  ),
-                                  prefixIcon: Icon(Icons.lock),
-                                ),
-                                obscureText: true,
-                              ),
-                            )
                           ],
                         ),
                       ),
@@ -140,9 +123,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _handleLogin(BuildContext context) {
+   /* Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MainPage()));*/
     if (_formKey.currentState.validate()) {
       Provider.of<UserStateModel>(context, listen: false)
-          .login(_userPassController.text, _userPassController.text)
+          .login(_identityIDController.text)
           .then((value) {
         // 登陆成功
         BotToast.showText(text: '登陆成功');

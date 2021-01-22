@@ -36,7 +36,7 @@ class _InformationState extends State<Information>{
                           ),
                         ),
                         new Text(
-                          user.institute,
+                          "${user.firstDepName}",
                           style: new TextStyle(
                               fontSize: 16
                           ),
@@ -50,14 +50,14 @@ class _InformationState extends State<Information>{
                     child: new Row(
                       children: <Widget>[
                         new Text(
-                          "信息管理：",
+                          "审核管理：",
                           style: new TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700
                           ),
                         ),
                         new Text(
-                          user.adminName,
+                          "${user.name}",
                           style: new TextStyle(
                               fontSize: 16
                           ),
@@ -71,14 +71,14 @@ class _InformationState extends State<Information>{
                     child: new Row(
                       children: <Widget>[
                         new Text(
-                          "职工人数：",
+                          "所属部门：",
                           style: new TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700
                           ),
                         ),
                         new Text(
-                          "${user.staffNum}人",
+                          "${user.secondDepName}",
                           style: new TextStyle(
                               fontSize: 16
                           ),
@@ -92,14 +92,14 @@ class _InformationState extends State<Information>{
                     child: new Row(
                       children: <Widget>[
                         new Text(
-                          "今日填报：",
+                          "职位：",
                           style: new TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700
                           ),
                         ),
                         new Text(
-                          "${user.fillNum}人次",
+                          "${user.secondPosition}",
                           style: new TextStyle(
                               fontSize: 16
                           ),

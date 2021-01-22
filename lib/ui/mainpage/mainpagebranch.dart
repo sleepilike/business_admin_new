@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:registration_admin/data/apply_state_model.dart';
 import 'package:registration_admin/data/monitor_state_model.dart';
 import 'package:registration_admin/data/user_state_model.dart';
 import 'package:registration_admin/ui/dialog/condition_dialog.dart';
@@ -23,10 +24,11 @@ class _MainPageBranchState extends State<MainPageBranch> {
       child: Scaffold(
         body: Consumer<UserStateModel>(
           builder: (BuildContext context, UserStateModel value, Widget child) {
-            int adminId = value.user.adminId;
-            return ChangeNotifierProvider<MonitorStateModel>( // 注册监控信息状态管理器
+            int userID = value.user.id;
+            print("userid:"+userID.toString());
+            return ChangeNotifierProvider<ApplyStateModel>(
               create: (BuildContext context) =>
-              MonitorStateModel()..init(adminId, value.user.role),
+              ApplyStateModel()..init(userID),
               child: Container(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
@@ -82,34 +84,6 @@ class _MainPageBranchState extends State<MainPageBranch> {
               ),
               color: Color(0xFF087f23),
               onPressed: () => handleLogout(context),
-            ),
-            Consumer<MonitorStateModel>(builder: (BuildContext context, MonitorStateModel value, Widget child) {
-              return RaisedButton(
-                child: Text(
-                  "定制表格",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: Color(0xFF087f23),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return ConditionDialog(value.requestEntity, (res) {
-                          value.refreshData(res).then((value) => BotToast.showText(text: '数据更新成功'))
-                              .catchError((error) => BotToast.showText(text: '数据更新失败，' + error.toString()));
-                        }, institutes: value.institutes, values: value.selectedIds,);
-                      });
-                },
-              );
-            },),
-            RaisedButton(
-              elevation: 4,
-              child: Text(
-                "导出",
-                style: Theme.of(context).textTheme.button,
-              ),
-              color: Color(0xFF087f23),
-              onPressed: () => handleExportExcel(context),
             ),
             SizedBox(
               width: 20,

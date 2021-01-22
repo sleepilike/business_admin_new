@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
             const Locale('en', 'US'),
           ],
           locale: Locale('zh'),
-          title: "广东省农业科学院职工健康信息报告系统",
+          title: "广东省农业科学院人员出差申报系统",
           home: LoginPage(),
           navigatorObservers: [BotToastNavigatorObserver()],
           //2.registered route observer

@@ -1,36 +1,35 @@
 
 
 import 'package:registration_admin/common/req_model.dart';
-import 'package:registration_admin/entity/institue_entity.dart';
 import 'package:registration_admin/entity/user_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/api.dart';
 
-const KEY_PASSWORD = "password";
-const KEY_USERNAME = "username";
+
+const KEY_IDENTUTYID = "identityID";
 class UserRepo {
   Future init() async {
     try {
       SharedPreferences sp = await SharedPreferences.getInstance();
-      String account = sp.getString(KEY_USERNAME);
-      String password  = sp.getString(KEY_PASSWORD);
+      String identityID = sp.getString(KEY_IDENTUTYID);
 
-      print('初始化， 获取账号：' + account);
-      if (account == null || password == null)
+
+      print('初始化， 获取账号：' + identityID);
+      if (identityID==null )
         return Future.error('无初始登陆状态');
-      return login(account, password);
+      return login(identityID);
     } catch (error) {
       return Future.error(error);
     }
   }
 
-  Future login(String username, String password) async {
+  Future login(String identityID) async {
     try {
-      var res = await ReqModel.post(API.LOGIN, {"account": username, "password": password});
+      var res = await ReqModel.get(API.LOGIN, {"identityId": identityID});
       SharedPreferences sp = await SharedPreferences.getInstance();
-      sp.setString(KEY_PASSWORD, password);
-      sp.setString(KEY_USERNAME, username);
+      sp.setString(KEY_IDENTUTYID,identityID);
+
 
       return Future.value(UserEntity.fromJson(res));
     } catch (error) {

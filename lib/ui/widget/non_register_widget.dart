@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-class NonRegisterWidget extends StatelessWidget {
+class NonDataWidget extends StatelessWidget {
   double width;
   double height;
 
-  NonRegisterWidget({this.width, this.height});
+  NonDataWidget({this.width, this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class NonRegisterWidget extends StatelessWidget {
           children: <Widget>[
             Icon(Icons.warning, color: Theme.of(context).primaryColor,),
             SizedBox(width: 10,),
-            Text('暂无职工登记！', style: Theme.of(context).textTheme.subtitle2,)
+            Text('暂无审核事项！', style: Theme.of(context).textTheme.subtitle2,)
           ],
         ),
       ),

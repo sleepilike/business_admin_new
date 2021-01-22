@@ -51,6 +51,7 @@ class ReqModel {
   }) async {
 
     final httpUrl = '${API.reqUrl}$url';
+    print(httpUrl);
 
     if (_client == null) {
       initDio();
@@ -63,10 +64,12 @@ class ReqModel {
       if (method == RequestType.GET) {
         ///组合GET请求的参数
         if (mapNoEmpty(params)) {
+          print(url);
           response = await _client.get(
-            url,
+            httpUrl,
             queryParameters: params,
           );
+          print("c1");
         } else {
           response = await _client.get(
             url,

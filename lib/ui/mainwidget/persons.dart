@@ -1,7 +1,14 @@
+import 'dart:js';
+
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:registration_admin/data/apply_state_model.dart';
 import 'package:registration_admin/data/monitor_state_model.dart';
+import 'package:registration_admin/data/user_state_model.dart';
+import 'package:registration_admin/entity/apply_entity.dart';
 import 'package:registration_admin/entity/worker_entity.dart';
+import 'package:registration_admin/ui/mainwidget/detail.dart';
 import 'package:registration_admin/ui/widget/non_register_widget.dart';
 
 import '../widget/card_item.dart';
@@ -10,132 +17,199 @@ class PersonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardItem(
-        title: "监控信息",
-        child: Consumer<MonitorStateModel>(
+        title: "审核信息",
+        child: Consumer<ApplyStateModel>(
           builder:
-              (BuildContext context, MonitorStateModel value, Widget child) {
-            print('监控信息consumer exec, ' + value.isRegister.toString());
-            return Persons(value.resultList, value.isRegister);
+              (BuildContext context, ApplyStateModel value, Widget child) {
+            return CheckInfor(value.allList,value.hasAll,
+                value.waitList,value.hasWait,
+                value.acceptList,value.hasAccept,
+                value.refuseList,value.hasRefuse,value.state);
           },
-        ));
+        )
+
+   );
   }
 
 }
+class CheckInfor extends StatefulWidget{
+  List<ApplyEntity> allList = new List<ApplyEntity>();
+  List<ApplyEntity> waitList= new List<ApplyEntity>();
+  List<ApplyEntity> acceptList= new List<ApplyEntity>();
+  List<ApplyEntity> refuseList= new List<ApplyEntity>();
 
-class Persons extends StatefulWidget {
-  List<WorkerEntity> resultList;
-  bool isRegister = false;
-
-  Persons(this.resultList, this.isRegister);
-
+  bool hasAll;
+  bool hasWait;
+  bool hasAccept;
+  bool hasRefuse;
+  bool state;
+  CheckInfor(this.allList,this.hasAll,this.waitList,this.hasWait,
+      this.acceptList,this.hasAccept,this.refuseList,this.hasRefuse,this.state);
   @override
   State<StatefulWidget> createState() {
-    return new _PersonsState();
+    return _CheckInforState();
   }
 }
-
-class _PersonsState extends State<Persons> {
-  int showLen = 0; // 显示的数量
-  bool isOverflow = false;
-  int resultLen = 0;
-  bool showAll = false;
+class _CheckInforState extends State<CheckInfor>{
 
 
 
+  List<int> mList;
+  List<ExpandStateBean> expandStateList;
+  _CheckInforState(){
+    mList = new List();
+    expandStateList = new List();
+    for(int i=0;i<4;i++){
+      mList.add(i);
+      expandStateList.add(ExpandStateBean(i, false));
+    }
+
+  }
+  _setCurrentIndex(int index,isExpand){
+    setState(() {
+      //遍历可展开状态列表
+      expandStateList.forEach((item){
+        if(item.index==index){
+          item.isOpen=!isExpand;
+        }
+      });
+    });
+  }
+  @override
   Widget build(BuildContext context) {
-    if (!showAll && widget.isRegister) {
-      resultLen = widget.resultList.length;
-      showLen = (isOverflow = resultLen>10)? 10:resultLen;
-    }
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 10,
+
+    return ExpansionPanelList(
+      expansionCallback: (index,bol){
+        _setCurrentIndex(index, bol);
+      },
+      children: mList.map((index){
+        //返回一个组成的ExpansionPanel
+        return ExpansionPanel(
+            headerBuilder: (context,isExpanded){
+              return GestureDetector(
+                child: title(index, index==0?(widget.hasAll?widget.allList.length:0):
+                index==1?(widget.hasWait?widget.waitList.length:0):
+                index==2?(widget.hasAccept?widget.acceptList.length:0):
+                (widget.hasRefuse?widget.refuseList.length:0)),
+                onTap: (){
+                  //调用内部方法
+                  _setCurrentIndex(index, expandStateList[index].isOpen);
+                },
+              );
+            },
+            body: Container(
+              child:widget.state? applyListWidget(context,index, index==0?widget.allList:index==1?widget.waitList:
+              index==2?widget.acceptList:widget.refuseList):Container()
+            ),
+            isExpanded: expandStateList[index].isOpen
+        );
+      }).toList(),
+    );
+
+  }
+
+}
+//list中item状态自定义类
+class ExpandStateBean{
+  var isOpen;   //item是否打开
+  var index;    //item中的索引
+  ExpandStateBean(this.index,this.isOpen);
+}
+
+Widget title(int index,int num){
+  return Padding(
+    padding: EdgeInsets.all(5.0),
+    child: Stack(
+      children: [
+        Container(
+          child: ListTile(
+            title: Text(index == 0?"全部":index == 1? "待审核":index == 2?"已通过":"未通过",
+              style: new TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700
+              ),),
           ),
-          Container(
-            padding: new EdgeInsets.all(2.0),
-            alignment: Alignment.center,
-            child: widget.isRegister? Table(
-              defaultVerticalAlignment: TableCellVerticalAlignment.top,
-              border: TableBorder.all(color: Colors.white),
-              children: _buildTableRowList(widget.resultList, showLen),
-            ): NonRegisterWidget(),
-          ),
-          Align( // 查看全部按钮
-            alignment: Alignment.centerRight,
-            child: Visibility(
-                visible: isOverflow,
-                child: Container(
-                  child: FlatButton(
-                      onPressed: () {
-                        print('press 查看全部 exec');
-                        setState(() {
-                          showAll = true;
-                          isOverflow = false;
-                          showLen = resultLen;
-                        });
-                      },
-                      child: Text(
-                        '查看全部',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            .copyWith(
-                            color: Theme.of(context).primaryColor),
-                      )),
-                )),
-          )
-        ],
-      ),
-    );
-  }
+        ),
+        index == 0?Container():Positioned(
+            left: 65.0,
+            top: 10.0,
+            child: num>0?Container(
+              padding: EdgeInsets.only(left: 1.0,right: 1.0,top: 2.0,bottom: 2.0),
+              width: 16,
+              height: 16,
+              child: Center(
+                  child: Text(num.toString(),
+                    style: TextStyle(
+                        fontSize: 10.0, color: Colors.red ),)
+              ),
+              decoration: BoxDecoration(
+                border: new Border.all(color: Colors.red, width: 1.0), // 边色与边宽度
+                color: Colors.white, // 底色
+                //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
+                borderRadius: new BorderRadius.circular((20.0)),
+              ),
+            ):Text("")
+        )
+      ],
+    ),
+  );
+}
 
-  List<TableRow> _buildTableRowList(List<WorkerEntity> resultList, int showLen) {
-    List<TableRow> rowList = List();
-    rowList.add(_buildTableHeader("姓名", "现居住地点", "健康情况", "周边人员身体\n健康情况"));
-    for (int i = 0; i < showLen; i++) {
-      WorkerEntity worker = resultList[i];
-      rowList.add(_buildRowItem(worker.workerName, worker.workerCurAdd, worker.status, worker.closeStatus));
+
+Widget applyListWidget(BuildContext context,int index,List applyList){
+  if(applyList.length==0)
+    return NonDataWidget();
+  else{
+    List<Widget> _list = new List();
+    for(int i=0;i<applyList.length;i++){
+      _list.add(Container(
+        padding: EdgeInsets.only(left: 10.0,right: 10.0),
+        child:applyOneWidge(context,index, applyList[i]) ,
+      ));
     }
-    return rowList;
+    return ListView(
+      shrinkWrap: true ,
+      children:_list,
+    );
   }
-
-  TableRow _buildRowItem(name, location, health, closeHealth) {
-    return new TableRow(
-      children: <Widget>[
-        new TableCell(child: buildTableCell(label: name)),
-        new TableCell(child: buildTableCell(label: location)),
-        new TableCell(child: buildTableCell(label: health)),
-        new TableCell(child: buildTableCell(label: closeHealth)),
+}
+Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
+  UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
+  int rol = userStateModel.user.firstPositionId;
+  return GestureDetector(
+    onTap: () => showDetaliDialog(context, applyEntity),
+    child: Column(
+      children: [
+        Container(
+          height: 70.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              index==0?Row(
+                children: [
+                  Text('${applyEntity.applicant}   ',
+                      style: TextStyle(color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
+                      ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?Colors.green:Colors.redAccent)),
+                  Text((applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?"(待审核)":
+                  ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?"(已通过)":"(未通过)",
+                      style: TextStyle(color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
+                      ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?Colors.green:Colors.redAccent))
+                ],
+              ):Text('${applyEntity.applicant}'),
+              Icon(Icons.keyboard_arrow_right,color: Colors.grey[300],)
+            ],
+          ),
+        ),
+        Container(height: 1.0,color:Colors.grey[100],)
       ],
-    );
-  }
-
-  Widget buildTableCell({label, style}) {
-    return new Container(
-      alignment: Alignment.center,
-      child: new Text(label??'', // 如果label为null，就置空
-          textAlign: TextAlign.center,
-          style: style == null ? Theme.of(context).textTheme.bodyText2 : style),
-    );
-  }
-
-  TableRow _buildTableHeader(name, location, health, closeHealth) {
-    TextStyle headerStyle = Theme.of(context)
-        .textTheme
-        .bodyText1
-        .copyWith(color: Theme.of(context).primaryColorDark);
-    return TableRow(
-      children: <Widget>[
-        new TableCell(child: buildTableCell(label: name, style: headerStyle)),
-        new TableCell(
-            child: buildTableCell(label: location, style: headerStyle)),
-        new TableCell(child: buildTableCell(label: health, style: headerStyle)),
-        new TableCell(
-            child: buildTableCell(label: closeHealth, style: headerStyle)),
-      ],
-    );
-  }
+    ),
+  );
+}
+showDetaliDialog(BuildContext context,ApplyEntity applyEntity) async{
+  UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
+  ApplyStateModel applyStateModel = Provider.of<ApplyStateModel>(context, listen: false);
+  int rol = userStateModel.user.firstPositionId;
+  int userId = userStateModel.user.id;
+  await Navigator.push(context,
+      new MaterialPageRoute(builder: (context) => DetailPage(rol,userId,applyStateModel,applyEntity)));
 }
