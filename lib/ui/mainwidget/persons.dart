@@ -1,4 +1,4 @@
-import 'dart:js';
+
 
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -163,7 +163,7 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
     List<Widget> _list = new List();
     for(int i=0;i<applyList.length;i++){
       _list.add(Container(
-        padding: EdgeInsets.only(left: 10.0,right: 10.0),
+        padding: EdgeInsets.only(left: 20.0,right: 10.0),
         child:applyOneWidge(context,index, applyList[i]) ,
       ));
     }
@@ -176,8 +176,13 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
 Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
   UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
   int rol = userStateModel.user.firstPositionId;
-  return GestureDetector(
-    onTap: () => showDetaliDialog(context, applyEntity),
+  double size = 16;
+  return InkWell(
+    onTap: (){
+      size=20;
+      showDetaliDialog(context, applyEntity);
+    },
+    highlightColor: Colors.green,
     child: Column(
       children: [
         Container(
@@ -188,14 +193,14 @@ Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
               index==0?Row(
                 children: [
                   Text('${applyEntity.applicant}   ',
-                      style: TextStyle(color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
+                      style: TextStyle(fontSize:size,color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
                       ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?Colors.green:Colors.redAccent)),
                   Text((applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?"(待审核)":
                   ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?"(已通过)":"(未通过)",
                       style: TextStyle(color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
                       ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?Colors.green:Colors.redAccent))
                 ],
-              ):Text('${applyEntity.applicant}'),
+              ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: size),),
               Icon(Icons.keyboard_arrow_right,color: Colors.grey[300],)
             ],
           ),
@@ -210,6 +215,6 @@ showDetaliDialog(BuildContext context,ApplyEntity applyEntity) async{
   ApplyStateModel applyStateModel = Provider.of<ApplyStateModel>(context, listen: false);
   int rol = userStateModel.user.firstPositionId;
   int userId = userStateModel.user.id;
-  await Navigator.push(context,
-      new MaterialPageRoute(builder: (context) => DetailPage(rol,userId,applyStateModel,applyEntity)));
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => DetailPage(rol,userId,applyStateModel,applyEntity)));
 }

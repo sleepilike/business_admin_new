@@ -35,10 +35,12 @@ class _InformationState extends State<Information>{
                               fontWeight: FontWeight.w700
                           ),
                         ),
-                        new Text(
-                          "${user.firstDepName}",
-                          style: new TextStyle(
-                              fontSize: 16
+                        Expanded(
+                          child: new Text(
+                            "${user.firstDepName}",
+                            style: new TextStyle(
+                                fontSize: 16
+                            ),
                           ),
                         ),
                       ],

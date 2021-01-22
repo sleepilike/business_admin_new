@@ -24,8 +24,6 @@ class _LoginPageState extends State<LoginPage> {
   var textTips = new TextStyle(fontSize: 16.0, color: Colors.black);
   var hintTips = new TextStyle(fontSize: 15.0, color: Colors.black26);
 
-  var _userPassController = new TextEditingController();
-  var _useNameController = new TextEditingController();
 
   var _identityIDController = new TextEditingController();
 
@@ -74,12 +72,12 @@ class _LoginPageState extends State<LoginPage> {
                                   10.0, leftRighthRadding, topBottomPadding),
                               child: TextFormField(
                                 validator: (v) =>
-                                strNoEmpty(v) ? null : '用户名不能为空',
+                                strNoEmpty(v) ? null : '身份证号不能为空',
                                 style: hintTips,
                                 controller: _identityIDController,
                                 decoration: InputDecoration(
-                                  labelText: '请输入用户名',
-                                  hintText: '您的用户名',
+                                  labelText: '请输入身份证号',
+                                  hintText: '您的身份证号',
                                   hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 13,
@@ -122,11 +120,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _handleLogin(BuildContext context) {
-   /* Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MainPage()));*/
+  _handleLogin(BuildContext context) async{
     if (_formKey.currentState.validate()) {
-      Provider.of<UserStateModel>(context, listen: false)
+      await Provider.of<UserStateModel>(context, listen: false)
           .login(_identityIDController.text)
           .then((value) {
         // 登陆成功
