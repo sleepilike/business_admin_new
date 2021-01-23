@@ -17,8 +17,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return BotToastInit(
-      child: ChangeNotifierProvider<UserStateModel>( // 注册状态管理器
+    return ChangeNotifierProvider<UserStateModel>( // 注册状态管理器
         create: (BuildContext context) => UserStateModel()..init(), // 初始化状态管理
         child: WillPopScope(
           onWillPop: ()async {
@@ -27,6 +26,7 @@ class _MyAppState extends State<MyApp> {
             return true;
           },
           child: MaterialApp(
+            builder: BotToastInit(),
             //配置中文
             localizationsDelegates: [
               //此处
@@ -71,7 +71,6 @@ class _MyAppState extends State<MyApp> {
                 Theme.of(context).buttonBarTheme.copyWith(buttonMinWidth: 100)),
           ),
         )
-      ),
     );
   }
 }

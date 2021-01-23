@@ -7,6 +7,7 @@ import 'package:registration_admin/data/apply_state_model.dart';
 import 'package:registration_admin/data/monitor_state_model.dart';
 import 'package:registration_admin/data/user_state_model.dart';
 import 'package:registration_admin/entity/apply_entity.dart';
+import 'package:registration_admin/entity/apply_rol_entity.dart';
 import 'package:registration_admin/entity/worker_entity.dart';
 import 'package:registration_admin/ui/mainwidget/detail.dart';
 import 'package:registration_admin/ui/widget/non_register_widget.dart';
@@ -175,11 +176,10 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
 }
 Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
   UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
-  int rol = userStateModel.user.firstPositionId;
-  double size = 16;
+  ApplyRolEntity applyRolEntity = new ApplyRolEntity(applyEntity, userStateModel.user);
+
   return InkWell(
     onTap: (){
-      size=20;
       showDetaliDialog(context, applyEntity);
     },
     highlightColor: Colors.green,
@@ -193,14 +193,14 @@ Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
               index==0?Row(
                 children: [
                   Text('${applyEntity.applicant}   ',
-                      style: TextStyle(fontSize:size,color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
-                      ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?Colors.green:Colors.redAccent)),
-                  Text((applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?"(待审核)":
-                  ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?"(已通过)":"(未通过)",
-                      style: TextStyle(color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
-                      ( applyEntity.status==2&&rol==2)||(applyEntity.status == 4&&rol==1)?Colors.green:Colors.redAccent))
+                      style: TextStyle(fontSize:16.0,color: applyRolEntity.state==0?Colors.orange:
+                      applyRolEntity.state == 1?Colors.green:Colors.redAccent)),
+                  Text(applyRolEntity.state==0?"(待审核)":
+                 applyRolEntity.state ==1?"(已通过)":"(未通过)",
+                      style: TextStyle(color: applyRolEntity.state==0?Colors.orange:
+                      applyRolEntity.state ==1?Colors.green:Colors.redAccent))
                 ],
-              ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: size),),
+              ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: 16.0),),
               Icon(Icons.keyboard_arrow_right,color: Colors.grey[300],)
             ],
           ),

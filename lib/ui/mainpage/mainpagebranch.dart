@@ -25,7 +25,6 @@ class _MainPageBranchState extends State<MainPageBranch> {
         body: Consumer<UserStateModel>(
           builder: (BuildContext context, UserStateModel value, Widget child) {
             int userID = value.user.id;
-            print("userid:"+userID.toString());
             return ChangeNotifierProvider<ApplyStateModel>(
               create: (BuildContext context) =>
               ApplyStateModel()..init(userID),

@@ -19,11 +19,15 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  DateTime dateTime;
+  
   @override
   Widget build(BuildContext context) {
     return Consumer<UserStateModel>(builder: (BuildContext context,UserStateModel value,Widget child){
       UserEntity user;
+      String start = widget.applyEntity.startTime.substring(0,10);
+      List startsp = start.split("-");
+      String end = widget.applyEntity.endTime.substring(0,10);
+      List endsp = start.split("-");
 
       return WillPopScope(
         onWillPop: ()async {
@@ -69,8 +73,8 @@ class _DetailPageState extends State<DetailPage> {
                               info(Icons.star, "出差原因", widget.applyEntity.reason),
                               info(Icons.person, "随行人员", widget.applyEntity.accompany),
                               info(Icons.attach_money, "经费来源", widget.applyEntity.fundsFrom),
-                              info(Icons.timer, "出发时间", "2020年1月1日"),
-                              info(Icons.timer, "结束时间", "2020年1月1日"),
+                              info(Icons.timer, "出发时间", "${startsp[0]}年${startsp[1]}月${startsp[2]}日"),
+                              info(Icons.timer, "结束时间", "${endsp[0]}年${endsp[1]}月${endsp[2]}日"),
                               info(Icons.place, "出发地", widget.applyEntity.departure),
                               info(Icons.place, "目的地", widget.applyEntity.destination),
                               info(Icons.directions_bus, "交通方式", widget.applyEntity.transport==null?"无":widget.applyEntity.transport),
@@ -158,7 +162,7 @@ class _DetailPageState extends State<DetailPage> {
           applyEntity.status==0?Container(child: Row(
             children: [
               Text("等待",style: TextStyle(color: Colors.grey,fontSize: 18),),
-              Text("${applyEntity.advise}",style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18),),
+              Text(" ${applyEntity.advise} ",style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18),),
               Text("审核 ",style: TextStyle(color: Colors.grey,fontSize: 18),),
             ],
           ),):applyEntity.status==2?Container(child: Row(
