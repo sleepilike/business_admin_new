@@ -21,7 +21,7 @@ class PersonPage extends StatelessWidget {
         child: Consumer<ApplyStateModel>(
           builder:
               (BuildContext context, ApplyStateModel value, Widget child) {
-            return CheckInfor(value.allList,value.hasAll,
+            return CheckInfoWidget(value.allList,value.hasAll,
                 value.waitList,value.hasWait,
                 value.acceptList,value.hasAccept,
                 value.refuseList,value.hasRefuse,value.state);
@@ -30,9 +30,9 @@ class PersonPage extends StatelessWidget {
 
    );
   }
-
 }
-class CheckInfor extends StatefulWidget{
+
+class CheckInfoWidget extends StatefulWidget{
   List<ApplyEntity> allList = new List<ApplyEntity>();
   List<ApplyEntity> waitList= new List<ApplyEntity>();
   List<ApplyEntity> acceptList= new List<ApplyEntity>();
@@ -43,20 +43,19 @@ class CheckInfor extends StatefulWidget{
   bool hasAccept;
   bool hasRefuse;
   bool state;
-  CheckInfor(this.allList,this.hasAll,this.waitList,this.hasWait,
+
+  CheckInfoWidget(this.allList,this.hasAll,this.waitList,this.hasWait,
       this.acceptList,this.hasAccept,this.refuseList,this.hasRefuse,this.state);
   @override
   State<StatefulWidget> createState() {
-    return _CheckInforState();
+    return _CheckInfoWidgetState();
   }
 }
-class _CheckInforState extends State<CheckInfor>{
 
-
-
+class _CheckInfoWidgetState extends State<CheckInfoWidget>{
   List<int> mList;
   List<ExpandStateBean> expandStateList;
-  _CheckInforState(){
+  _CheckInfoWidgetState(){
     mList = new List();
     expandStateList = new List();
     for(int i=0;i<4;i++){
@@ -155,7 +154,6 @@ Widget title(int index,int num){
   );
 }
 
-
 Widget applyListWidget(BuildContext context,int index,List applyList){
   if(applyList.length==0)
     return NonDataWidget();
@@ -164,7 +162,7 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
     for(int i=0;i<applyList.length;i++){
       _list.add(Container(
         padding: EdgeInsets.only(left: 20.0,right: 10.0),
-        child:applyOneWidge(context,index, applyList[i]) ,
+        child:applyOneWidget(context,index, applyList[i]) ,
       ));
     }
     return ListView(
@@ -173,14 +171,15 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
     );
   }
 }
-Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
+
+Widget applyOneWidget(BuildContext context,int index,ApplyEntity applyEntity){
   UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
   int rol = userStateModel.user.firstPositionId;
   double size = 16;
   return InkWell(
     onTap: (){
       size=20;
-      showDetaliDialog(context, applyEntity);
+      showDetailDialog(context, applyEntity);
     },
     highlightColor: Colors.green,
     child: Column(
@@ -191,6 +190,9 @@ Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               index==0?Row(
+                // todo yuyi 这里通过 status和rol和逻辑应收敛到applyEntity中, 通过get方法获取ui需要的信息
+                // 另外，对于后台定义的0/1/2（具有意义的常量），工程里应定义成常量并命令
+                // 好处：1. ui上不耦合业务逻辑 2. 代码逻辑复用性、可维护性更强 3. 提高代码可读性
                 children: [
                   Text('${applyEntity.applicant}   ',
                       style: TextStyle(fontSize:size,color: (applyEntity.status == 0&&rol==2)||(applyEntity.status == 2&&rol==1)?Colors.orange:
@@ -210,7 +212,8 @@ Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
     ),
   );
 }
-showDetaliDialog(BuildContext context,ApplyEntity applyEntity) async{
+
+showDetailDialog(BuildContext context,ApplyEntity applyEntity) async{
   UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
   ApplyStateModel applyStateModel = Provider.of<ApplyStateModel>(context, listen: false);
   int rol = userStateModel.user.firstPositionId;
