@@ -104,10 +104,9 @@ class _CheckInfoWidgetState extends State<CheckInfoWidget>{
         );
       }).toList(),
     );
-
   }
-
 }
+
 //list中item状态自定义类
 class ExpandStateBean{
   var isOpen;   //item是否打开
@@ -190,7 +189,7 @@ Widget applyOneWidget(BuildContext context,int index,ApplyEntity applyEntity){
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               index==0?Row(
-                // todo yuyi 这里通过 status和rol和逻辑应收敛到applyEntity中, 通过get方法获取ui需要的信息
+                // todo yuyi 这里通过 status和rol和逻辑应收敛到applyEntity / Model中, 通过get方法获取ui需要的信息
                 // 另外，对于后台定义的0/1/2（具有意义的常量），工程里应定义成常量并命令
                 // 好处：1. ui上不耦合业务逻辑 2. 代码逻辑复用性、可维护性更强 3. 提高代码可读性
                 children: [
