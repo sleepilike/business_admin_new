@@ -15,6 +15,7 @@ class ApplyEntity {
   String approval;
   int status;
 
+
   ApplyEntity(
       {this.id,
         this.applicant,
@@ -30,7 +31,8 @@ class ApplyEntity {
         this.transportBeyond,
         this.advise,
         this.approval,
-        this.status});
+        this.status}){
+  }
 
   ApplyEntity.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -14,7 +14,12 @@ import 'package:registration_admin/ui/widget/non_register_widget.dart';
 
 import '../widget/card_item.dart';
 
-class PersonPage extends StatelessWidget {
+class PersonPage extends StatefulWidget {
+  @override
+  _PersonPageState createState() => _PersonPageState();
+}
+
+class _PersonPageState extends State<PersonPage> {
   @override
   Widget build(BuildContext context) {
     return CardItem(
@@ -29,10 +34,10 @@ class PersonPage extends StatelessWidget {
           },
         )
 
-   );
+    );
   }
-
 }
+
 class CheckInfor extends StatefulWidget{
   List<ApplyEntity> allList = new List<ApplyEntity>();
   List<ApplyEntity> waitList= new List<ApplyEntity>();
@@ -177,7 +182,10 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
 Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
   UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
   ApplyRolEntity applyRolEntity = new ApplyRolEntity(applyEntity, userStateModel.user);
-
+  String start = applyEntity.startTime.substring(0,10);
+  List startsp = start.split("-");
+  String end = applyEntity.endTime.substring(0,10);
+  List endsp = end.split("-");
   return InkWell(
     onTap: (){
       showDetaliDialog(context, applyEntity);
@@ -186,25 +194,35 @@ Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
     child: Column(
       children: [
         Container(
-          height: 70.0,
+          padding: EdgeInsets.all(5.0),
+          height: 80.0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              index==0?Row(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${applyEntity.applicant}   ',
-                      style: TextStyle(fontSize:16.0,color: applyRolEntity.state==0?Colors.orange:
-                      applyRolEntity.state == 1?Colors.green:Colors.redAccent)),
-                  Text(applyRolEntity.state==0?"(待审核)":
-                 applyRolEntity.state ==1?"(已通过)":"(未通过)",
-                      style: TextStyle(color: applyRolEntity.state==0?Colors.orange:
-                      applyRolEntity.state ==1?Colors.green:Colors.redAccent))
+                  index==0?Row(
+                    children: [
+                      Text('${applyEntity.applicant}   ',
+                          style: TextStyle(fontSize:16.0,color: applyRolEntity.state==0?Colors.orange:
+                          applyRolEntity.state == 1?Colors.green:Colors.redAccent)),
+                      Text(applyRolEntity.state==0?"(待审核)":
+                      applyRolEntity.state ==1?"(已通过)":"(未通过)",
+                          style: TextStyle(color: applyRolEntity.state==0?Colors.orange:
+                          applyRolEntity.state ==1?Colors.green:Colors.redAccent))
+                    ],
+                  ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: 16.0),),
+                  Text('${applyEntity.departure} —— ${applyEntity.destination}',style: TextStyle(color: Colors.grey,fontSize: 15.0),),
+                  Text('${startsp[0]}年${startsp[1]}月${startsp[2]}日 —— ${endsp[0]}年${endsp[1]}月${endsp[2]}日',style: TextStyle(color: Colors.grey,fontSize: 15.0))
                 ],
-              ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: 16.0),),
-              Icon(Icons.keyboard_arrow_right,color: Colors.grey[300],)
+              ),
+              Icon(Icons.keyboard_arrow_right,color: Colors.grey[500],)
             ],
           ),
         ),
+
         Container(height: 1.0,color:Colors.grey[100],)
       ],
     ),

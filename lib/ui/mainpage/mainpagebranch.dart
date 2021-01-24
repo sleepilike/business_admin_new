@@ -91,22 +91,6 @@ class _MainPageBranchState extends State<MainPageBranch> {
         ));
   }
 
-  handleExportExcel(BuildContext context) {
-    MonitorStateModel stateModel =  Provider.of<MonitorStateModel>(context, listen: false);
-    if (stateModel.hasMonitorInfo) {
-      BotToast.showLoading();
-      stateModel.exportExcel().then((value) {
-        BotToast.closeAllLoading();
-        launch(value);
-      }).catchError((err) {
-        // 错误
-        BotToast.closeAllLoading();
-        BotToast.showText(text: '导出excel错误，' + err.toString());
-      });
-    } else {
-      BotToast.showText(text: '该时间段暂无人填报');
-    }
-  }
 
   /// 登出
   handleLogout(BuildContext context) {

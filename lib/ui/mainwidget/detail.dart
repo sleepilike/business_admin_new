@@ -23,11 +23,10 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserStateModel>(builder: (BuildContext context,UserStateModel value,Widget child){
-      UserEntity user;
       String start = widget.applyEntity.startTime.substring(0,10);
       List startsp = start.split("-");
       String end = widget.applyEntity.endTime.substring(0,10);
-      List endsp = start.split("-");
+      List endsp = end.split("-");
 
       return WillPopScope(
         onWillPop: ()async {

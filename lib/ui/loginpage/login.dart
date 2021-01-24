@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:registration_admin/data/user_state_model.dart';
+import 'package:registration_admin/ui/mainpage/mainpagebranch.dart';
 import 'package:registration_admin/ui/widget/auto_resize_widget.dart';
 import 'package:registration_admin/ui/widget/header.dart';
 
@@ -35,11 +36,12 @@ class _LoginPageState extends State<LoginPage> {
           resizeToAvoidBottomInset: false,
           body: Consumer<UserStateModel>(
             builder: (BuildContext context, UserStateModel value, Widget child) {
+              print("登录界面");
               // 已经登陆，跳转到首页
               if (value.autoLogin) {
                 Future.delayed(Duration(milliseconds: 500), (){
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => MainPage()));
+                      context, MaterialPageRoute(builder: (context) => MainPageBranch()));
                 });
               }
               return Container(
@@ -128,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
         // 登陆成功
         BotToast.showText(text: '登陆成功');
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainPage()));
+            context, MaterialPageRoute(builder: (context) => MainPageBranch()));
       }).catchError((err) => BotToast.showText(text: '登陆失败，' + err.toString()));
     }
   }
