@@ -39,27 +39,30 @@ class _DetailPageState extends State<DetailPage> {
             //type:MaterialType.transparency,
             body: SizedBox(
               child: Container(
-                margin: EdgeInsets.only(top: 20.0),
-                padding: EdgeInsets.all(10.0),
+
                 color: Colors.white,
                 width: double.infinity,
                 child:Column(
                   children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text((widget.applyEntity.status==0&&widget.rol==2)||(widget.applyEntity.status==2&&widget.rol==1)?'待审核':
-                        (widget.applyEntity.status==2&&widget.rol==2)||(widget.applyEntity.status==4&&widget.rol==1)?"已通过":"未通过",
-                          style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18.0,fontWeight: FontWeight.w700),),
-                        IconButton(
-                          icon: Icon(Icons.close),
-                          color: Theme.of(context).primaryColor,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      padding: EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text((widget.applyEntity.status==0&&widget.rol==2)||(widget.applyEntity.status==2&&widget.rol==1)?'待审核':
+                          (widget.applyEntity.status==2&&widget.rol==2)||(widget.applyEntity.status==4&&widget.rol==1)?"已通过":"未通过",
+                            style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18.0,fontWeight: FontWeight.w700),),
+                          IconButton(
+                            icon: Icon(Icons.close),
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: ListView(
@@ -86,6 +89,7 @@ class _DetailPageState extends State<DetailPage> {
                         ],
                       ),
                     ),
+
                     (widget.applyEntity.status==0&&widget.rol==2)||
                         (widget.applyEntity.status==3&&widget.rol==1)||
                         (widget.applyEntity.status==2&&widget.rol==1)?Container(
@@ -119,7 +123,7 @@ class _DetailPageState extends State<DetailPage> {
   }
   Widget info(IconData iconData,String title,String info){
     return Container(
-      //padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(10.0),
       height: 50.0,
       width: double.infinity,
       child: Row(
@@ -142,7 +146,7 @@ class _DetailPageState extends State<DetailPage> {
   }
   Widget lastStatusWidget(ApplyEntity applyEntity){
     return Container(
-      //padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(10.0),
       height: 50.0,
       width: double.infinity,
       child: Row(
@@ -193,7 +197,7 @@ class _DetailPageState extends State<DetailPage> {
   }
   Widget currentStatusWidget(ApplyEntity applyEntity){
     return Container(
-      //padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(10.0),
       height: 50.0,
       width: double.infinity,
       child: Row(

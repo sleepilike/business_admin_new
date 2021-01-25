@@ -24,7 +24,7 @@ class _InformationState extends State<Information>{
             width: double.infinity,
             child: Column(
               children: <Widget>[
-                Padding(
+                /*Padding(
                     padding: new EdgeInsets.all(7),
                     child: new Row(
                       children: <Widget>[
@@ -46,7 +46,7 @@ class _InformationState extends State<Information>{
                       ],
                     )
 
-                ),
+                ),*/
                 Padding(
                     padding: new EdgeInsets.all(7),
                     child: new Row(

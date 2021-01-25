@@ -214,8 +214,11 @@ Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
                           applyRolEntity.state ==1?Colors.green:Colors.redAccent))
                     ],
                   ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: 16.0),),
-                  Text('${applyEntity.departure} —— ${applyEntity.destination}',style: TextStyle(color: Colors.grey,fontSize: 15.0),),
-                  Text('${startsp[0]}年${startsp[1]}月${startsp[2]}日 —— ${endsp[0]}年${endsp[1]}月${endsp[2]}日',style: TextStyle(color: Colors.grey,fontSize: 15.0))
+                  Container(height: 5.0,),
+                  Expanded(
+                    child: Text('${applyEntity.departure} — ${applyEntity.destination}',style: TextStyle(color: Colors.grey,fontSize: 15.0),),
+                  ),
+                  Text('${startsp[0]}年${startsp[1]}月${startsp[2]}日 — ${endsp[0]}年${endsp[1]}月${endsp[2]}日',style: TextStyle(color: Colors.grey,fontSize: 15.0))
                 ],
               ),
               Icon(Icons.keyboard_arrow_right,color: Colors.grey[500],)
