@@ -6,10 +6,10 @@ import 'package:registration_admin/entity/apply_entity.dart';
 
 class ApplyStateModel extends ChangeNotifier{
 
-  bool _allState = false;
-  bool _waitState = false;
-  bool _acceptState = false;
-  bool _refuseState = false;
+  bool _allState = false; //全部
+  bool _waitState = false;  //待审核
+  bool _acceptState = false;  //已通过
+  bool _refuseState = false; //不通过
 
   ApplyRepo _applyRepo = new ApplyRepo();
   List<ApplyEntity> _allList ;
@@ -46,6 +46,7 @@ class ApplyStateModel extends ChangeNotifier{
       print("ApplyStateModel init eeror"+error.toString());
     }
   }
+
 
   check(int applicationId,int type,int userId) async{
     print("applyStateModel check");

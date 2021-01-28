@@ -27,6 +27,9 @@ class _DetailPageState extends State<DetailPage> {
       List startsp = start.split("-");
       String end = widget.applyEntity.endTime.substring(0,10);
       List endsp = end.split("-");
+      String apply = widget.applyEntity.applyTime.substring(0,10);
+      List applysp = apply.split("-");
+
 
       return WillPopScope(
         onWillPop: ()async {
@@ -51,8 +54,8 @@ class _DetailPageState extends State<DetailPage> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text((widget.applyEntity.status==0&&widget.rol==2)||(widget.applyEntity.status==2&&widget.rol==1)?'待审核':
-                          (widget.applyEntity.status==2&&widget.rol==2)||(widget.applyEntity.status==4&&widget.rol==1)?"已通过":"未通过",
+                          Text((widget.applyEntity.status==0&&widget.rol==2)||(widget.applyEntity.status==2&&widget.rol==1)?'待我审核':
+                          (widget.applyEntity.status==2&&widget.rol==2)||(widget.applyEntity.status==4&&widget.rol==1)?"我已同意":"我不同意",
                             style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 18.0,fontWeight: FontWeight.w700),),
                           IconButton(
                             icon: Icon(Icons.close),
@@ -83,6 +86,7 @@ class _DetailPageState extends State<DetailPage> {
                               info(Icons.directions_bus, "超标原因", widget.applyEntity.transportBeyond==null?"无":widget.applyEntity.transportBeyond),
                               lastStatusWidget(widget.applyEntity),
                               currentStatusWidget(widget.applyEntity),
+                              info(Icons.timer, "提交时间", "${applysp[0]}年${applysp[1]}月${applysp[2]}日"),
 
                             ],
                           )
@@ -99,13 +103,13 @@ class _DetailPageState extends State<DetailPage> {
                         children: [
                           RaisedButton(
                             elevation: 4,
-                            child: Text('拒绝',style: Theme.of(context).textTheme.button,),
+                            child: Text('不同意',style: Theme.of(context).textTheme.button,),
                             color: Color(0xFF087f23),
                             onPressed: () => _handleCheck(context, 1),
                           ),
                           RaisedButton(
                             elevation: 4,
-                            child: Text('通过',style: Theme.of(context).textTheme.button,),
+                            child: Text('同意',style: Theme.of(context).textTheme.button,),
                             color: Color(0xFF087f23),
                             onPressed: () => _handleCheck(context, 0),
                           )

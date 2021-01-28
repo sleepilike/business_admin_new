@@ -14,6 +14,7 @@ class ApplyEntity {
   String advise;
   String approval;
   int status;
+  String applyTime;
 
 
   ApplyEntity(
@@ -31,7 +32,8 @@ class ApplyEntity {
         this.transportBeyond,
         this.advise,
         this.approval,
-        this.status}){
+        this.status,
+        this.applyTime}){
   }
 
   ApplyEntity.fromJson(Map<String, dynamic> json) {
@@ -50,6 +52,7 @@ class ApplyEntity {
     advise = json['advise'];
     approval = json['approval'];
     status = json['status'];
+    applyTime = json['applyTime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -69,6 +72,7 @@ class ApplyEntity {
     data['advise'] = this.advise;
     data['approval'] = this.approval;
     data['status'] = this.status;
+    data['applyTime'] = this.applyTime;
     return data;
   }
   static List<ApplyEntity> fromJsonList(List list) {
