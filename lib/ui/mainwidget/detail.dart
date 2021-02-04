@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,11 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ],
           ),
-          Container(child: Text("${info} ",style: TextStyle(color: Colors.grey,fontSize: 18),),)
+          Container(
+              width: 230.0,
+              alignment: Alignment.centerRight,
+              child:AutoSizeText("${info} ",style: TextStyle(color: Colors.grey,fontSize: 18),maxLines: 2,)
+          )
         ],
       ),
     );

@@ -12,8 +12,8 @@ class ApplyRepo{
       print("getAllList success:"+res.toString());
       return Future.value(ApplyEntity.fromJsonList(res));
     }catch(error){
-      print("getAllList error:"+error.toString());
-      return Future.error(error);
+      {print("getAllList error:"+error.toString());
+      return Future.error(error);}
     }
   }
 

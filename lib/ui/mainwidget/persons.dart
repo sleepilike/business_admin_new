@@ -106,8 +106,8 @@ class _CheckInforState extends State<CheckInfor>{
               );
             },
             body: Container(
-              child:widget.state? Two(index,index==0?widget.allList:index==1?widget.waitList:
-              index==2?widget.acceptList:widget.refuseList):Container()
+                child:widget.state? Two(index,index==0?widget.allList:index==1?widget.waitList:
+                index==2?widget.acceptList:widget.refuseList):Container()
             ),
             isExpanded: expandStateList[index].isOpen
         );
@@ -176,6 +176,7 @@ Widget applyListWidget(BuildContext context,int index,List applyList){
       ));
     }
     return ListView(
+      physics: NeverScrollableScrollPhysics(),//两级/多级listview
       shrinkWrap: true ,
       children:_list,
     );
@@ -253,7 +254,7 @@ class Two extends StatefulWidget {
   Two(int order,List<ApplyEntity> applyList){
     this.order = order;
     this.applyList = applyList;
-    for(int i = 0;i<this.applyList.length;i++){
+    for(int i = this.applyList.length-1;i>=0;i--){
       String applyTime = this.applyList[i].applyTime.substring(0,10);
       List time = applyTime.split("-");
       if(isOver(time[0], time[1], time[2])){
