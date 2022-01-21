@@ -13,8 +13,6 @@ class UserRepo {
     try {
       SharedPreferences sp = await SharedPreferences.getInstance();
       String identityID = sp.getString(KEY_IDENTUTYID);
-
-
       print('初始化， 获取账号：' + identityID);
       if (identityID==null )
         return Future.error('无初始登陆状态');

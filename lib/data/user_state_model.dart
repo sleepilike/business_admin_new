@@ -21,6 +21,7 @@ class UserStateModel extends ChangeNotifier {
   Future init () async {
     try {
       _user = await _repository.init();
+      //如果已经登录过，会继续执行，否则直接catch error
       _autoLogin = true;
       notifyListeners();
       return Future.value();

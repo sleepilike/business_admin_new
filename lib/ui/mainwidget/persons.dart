@@ -10,7 +10,7 @@ import 'package:registration_admin/data/user_state_model.dart';
 import 'package:registration_admin/entity/apply_entity.dart';
 import 'package:registration_admin/entity/apply_rol_entity.dart';
 import 'package:registration_admin/entity/worker_entity.dart';
-import 'package:registration_admin/ui/mainwidget/detail.dart';
+import 'package:registration_admin/ui/mainpage/detail.dart';
 import 'package:registration_admin/ui/widget/non_register_widget.dart';
 
 import '../widget/card_item.dart';
@@ -61,17 +61,22 @@ class _CheckInforState extends State<CheckInfor>{
 
 
 
+  //展开折叠列表
   List<int> mList;
   List<ExpandStateBean> expandStateList;
+
   _CheckInforState(){
     mList = new List();
     expandStateList = new List();
+    //一共四个展开折叠列表 全部 待审核 已通过 不通过
     for(int i=0;i<4;i++){
       mList.add(i);
-      expandStateList.add(ExpandStateBean(i, false));
+      expandStateList.add(ExpandStateBean(i, false));//初始状态为折叠状态
     }
 
   }
+
+  //控制列表的折叠与展开
   _setCurrentIndex(int index,isExpand){
     setState(() {
       //遍历可展开状态列表
@@ -106,6 +111,7 @@ class _CheckInforState extends State<CheckInfor>{
               );
             },
             body: Container(
+              //二级展开列表 ”近三天“ ”更早“
                 child:widget.state? Two(index,index==0?widget.allList:index==1?widget.waitList:
                 index==2?widget.acceptList:widget.refuseList):Container()
             ),
@@ -124,6 +130,7 @@ class ExpandStateBean{
   ExpandStateBean(this.index,this.isOpen);
 }
 
+//标题
 Widget title(int index,int num){
   return Padding(
     padding: EdgeInsets.all(5.0),
@@ -161,86 +168,6 @@ Widget title(int index,int num){
       ],
     ),
   );
-}
-
-
-Widget applyListWidget(BuildContext context,int index,List applyList){
-  if(applyList.length==0)
-    return NonDataWidget();
-  else{
-    List<Widget> _list = new List();
-    for(int i=0;i<applyList.length;i++){
-      _list.add(Container(
-        padding: EdgeInsets.only(left: 20.0,right: 10.0),
-        child:applyOneWidge(context,index, applyList[i]) ,
-      ));
-    }
-    return ListView(
-      physics: NeverScrollableScrollPhysics(),//两级/多级listview
-      shrinkWrap: true ,
-      children:_list,
-    );
-  }
-}
-Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
-  UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
-  ApplyRolEntity applyRolEntity = new ApplyRolEntity(applyEntity, userStateModel.user);
-  String start = applyEntity.startTime.substring(0,10);
-  List startsp = start.split("-");
-  String end = applyEntity.endTime.substring(0,10);
-  List endsp = end.split("-");
-  return InkWell(
-    onTap: (){
-      showDetaliDialog(context, applyEntity);
-    },
-    highlightColor: Colors.green,
-    child: Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(5.0),
-          height: 80.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  index==0?Row(
-                    children: [
-                      Text('${applyEntity.applicant}   ',
-                          style: TextStyle(fontSize:16.0,color: applyRolEntity.state==0?Colors.orange:
-                          applyRolEntity.state == 1?Colors.green:Colors.redAccent)),
-                      Text(applyRolEntity.state==0?"(待我审核)":
-                      applyRolEntity.state ==1?"(我已同意)":"(我不同意)",
-                          style: TextStyle(color: applyRolEntity.state==0?Colors.orange:
-                          applyRolEntity.state ==1?Colors.green:Colors.redAccent))
-                    ],
-                  ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: 16.0),),
-                  Container(height: 5.0,),
-                  Expanded(
-                    child: Text('${applyEntity.departure} — ${applyEntity.destination}',style: TextStyle(color: Colors.grey,fontSize: 15.0),),
-                  ),
-                  Text('${startsp[0]}年${startsp[1]}月${startsp[2]}日 — ${endsp[0]}年${endsp[1]}月${endsp[2]}日',style: TextStyle(color: Colors.grey,fontSize: 15.0))
-                ],
-              ),
-              Icon(Icons.keyboard_arrow_right,color: Colors.grey[500],)
-            ],
-          ),
-        ),
-
-        Container(height: 1.0,color:Colors.grey[100],)
-      ],
-    ),
-  );
-}
-showDetaliDialog(BuildContext context,ApplyEntity applyEntity) async{
-  UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
-  ApplyStateModel applyStateModel = Provider.of<ApplyStateModel>(context, listen: false);
-  int rol = userStateModel.user.firstPositionId;
-  int userId = userStateModel.user.id;
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => DetailPage(rol,userId,applyStateModel,applyEntity)));
 }
 
 //二级展开列表
@@ -305,10 +232,10 @@ class _TwoState extends State<Two> {
                   padding: EdgeInsets.only(left: 20.0),
                   child: ListTile(
                     title: Text(index == 0?"近三天":"更早",style: TextStyle(
-                    fontSize: 16,
-                    fontWeight:FontWeight.w600
+                        fontSize: 16,
+                        fontWeight:FontWeight.w600
+                    ),),
                   ),),
-                ),),
                 onTap: (){
                   //调用内部方法
                   _setCurrentIndex(index, expandStateList[index].isOpen);
@@ -324,3 +251,90 @@ class _TwoState extends State<Two> {
     );
   }
 }
+
+Widget applyListWidget(BuildContext context,int index,List applyList){
+  if(applyList.length==0)
+    return NonDataWidget();
+  else{
+    List<Widget> _list = new List();
+    for(int i=0;i<applyList.length;i++){
+      _list.add(Container(
+        padding: EdgeInsets.only(left: 20.0,right: 10.0),
+        child:applyOneWidge(context,index, applyList[i]) ,
+      ));
+    }
+    return ListView(
+      physics: NeverScrollableScrollPhysics(),//两级/多级listview
+      shrinkWrap: true ,
+      children:_list,
+    );
+  }
+}
+
+//单一条审批样式
+Widget applyOneWidge(BuildContext context,int index,ApplyEntity applyEntity){
+
+  //获取用户当前状态实例
+  UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
+  ApplyRolEntity applyRolEntity = new ApplyRolEntity(applyEntity, userStateModel.user);
+  String start = applyEntity.startTime.substring(0,10);
+  List startsp = start.split("-");
+  String end = applyEntity.endTime.substring(0,10);
+  List endsp = end.split("-");
+  return InkWell(
+    onTap: (){
+      //点击跳转对应审批单详情
+      showDetaliDialog(context, applyEntity);
+    },
+    highlightColor: Colors.green,
+    child: Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(5.0),
+          height: 80.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //如果该栏为”全部“，则根据该审批清单当前状态设置对于的样式进行区分
+                  index==0?Row(
+                    children: [
+                      Text('${applyEntity.applicant}   ',
+                          style: TextStyle(fontSize:16.0,color: applyRolEntity.state==0?Colors.orange:
+                          applyRolEntity.state == 1?Colors.green:Colors.redAccent)),
+                      Text(applyRolEntity.state==0?"(待我审核)":
+                      applyRolEntity.state ==1?"(我已同意)":"(我不同意)",
+                          style: TextStyle(color: applyRolEntity.state==0?Colors.orange:
+                          applyRolEntity.state ==1?Colors.green:Colors.redAccent))
+                    ],
+                  ):Text('${applyEntity.applicant}',style: TextStyle(fontSize: 16.0),),
+                  Container(height: 5.0,),
+                  Expanded(
+                    child: Text('${applyEntity.departure} — ${applyEntity.destination}',style: TextStyle(color: Colors.grey,fontSize: 15.0),),
+                  ),
+                  Text('${startsp[0]}年${startsp[1]}月${startsp[2]}日 — ${endsp[0]}年${endsp[1]}月${endsp[2]}日',style: TextStyle(color: Colors.grey,fontSize: 15.0))
+                ],
+              ),
+              Icon(Icons.keyboard_arrow_right,color: Colors.grey[500],)
+            ],
+          ),
+        ),
+
+        Container(height: 1.0,color:Colors.grey[100],)
+      ],
+    ),
+  );
+}
+showDetaliDialog(BuildContext context,ApplyEntity applyEntity) async{
+  UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
+  ApplyStateModel applyStateModel = Provider.of<ApplyStateModel>(context, listen: false);
+  int rol = userStateModel.user.firstPositionId;
+  int userId = userStateModel.user.id;
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => DetailPage(rol,userId,applyStateModel,applyEntity)));
+}
+
+

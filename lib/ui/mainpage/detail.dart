@@ -1,3 +1,4 @@
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:date_format/date_format.dart';
@@ -9,6 +10,7 @@ import 'package:registration_admin/entity/apply_entity.dart';
 import 'package:registration_admin/entity/user_entity.dart';
 import 'package:registration_admin/ui/widget/auto_resize_widget.dart';
 
+//审核页面
 class DetailPage extends StatefulWidget {
   int rol;
   int userId;
@@ -153,6 +155,8 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
   }
+
+  //上一个状态 组件
   Widget lastStatusWidget(ApplyEntity applyEntity){
     return Container(
       padding: EdgeInsets.all(10.0),
@@ -171,6 +175,7 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ],
           ),
+          //根据该审批单状态
           applyEntity.status==0?Container(child: Row(
             children: [
               Text("等待",style: TextStyle(color: Colors.grey,fontSize: 18),),
@@ -204,6 +209,8 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
   }
+
+  //当前状态组件
   Widget currentStatusWidget(ApplyEntity applyEntity){
     return Container(
       padding: EdgeInsets.all(10.0),
@@ -253,9 +260,8 @@ class _DetailPageState extends State<DetailPage> {
       ),
     );
   }
+
   _handleCheck(BuildContext context,int type)async{
-   // ApplyStateModel applyStateModel = Provider.of<ApplyStateModel>(context, listen: false);
-   // UserStateModel userStateModel = Provider.of<UserStateModel>(context, listen: false);
     BotToast.showLoading();
     await widget.applyStateModel.check(widget.applyEntity.id, type, widget.userId).then((value){
       BotToast.closeAllLoading();

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:registration_admin/data/apply_state_model.dart';
 import 'package:registration_admin/data/monitor_state_model.dart';
 import 'package:registration_admin/data/user_state_model.dart';
-import 'package:registration_admin/ui/dialog/condition_dialog.dart';
+
 import 'package:registration_admin/ui/loginpage/login.dart';
 import 'package:registration_admin/ui/mainwidget/imformation.dart';
 import 'package:registration_admin/ui/mainwidget/persons.dart';
@@ -26,8 +26,8 @@ class _MainPageBranchState extends State<MainPageBranch> {
           builder: (BuildContext context, UserStateModel value, Widget child) {
             int userID = value.user.id;
             return ChangeNotifierProvider<ApplyStateModel>(
-              create: (BuildContext context) =>
-              ApplyStateModel()..init(userID),
+              // 注册用户审批清单状态 并初始化
+              create: (BuildContext context) => ApplyStateModel()..init(userID),
               child: Container(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,

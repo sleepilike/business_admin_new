@@ -17,8 +17,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<UserStateModel>( // 注册状态管理器
-        create: (BuildContext context) => UserStateModel()..init(), // 初始化状态管理
+    return ChangeNotifierProvider<UserStateModel>( // 注册用户状态管理器，根据用户是否登录进行跳转
+        create: (BuildContext context) => UserStateModel()..init(), // 初始化用户状态管理
         child: WillPopScope(
           onWillPop: ()async {
             print("点击返回键");

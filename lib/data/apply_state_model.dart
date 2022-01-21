@@ -4,12 +4,13 @@ import 'package:registration_admin/common/check.dart';
 import 'package:registration_admin/data/apply_repo.dart';
 import 'package:registration_admin/entity/apply_entity.dart';
 
+//该登录用户下审批清单
 class ApplyStateModel extends ChangeNotifier{
 
-  bool _allState = false; //全部
-  bool _waitState = false;  //待审核
-  bool _acceptState = false;  //已通过
-  bool _refuseState = false; //不通过
+  bool _allState = false; //是否已经加载完成“全部”清单列表
+  bool _waitState = false;  //是否已经加载完成“待审核”清单列表
+  bool _acceptState = false;  //是否已经加载完成“已通过”清单列表
+  bool _refuseState = false; //是否已经加载完成“不通过”清单列表
 
   ApplyRepo _applyRepo = new ApplyRepo();
   List<ApplyEntity> _allList ;
@@ -22,7 +23,7 @@ class ApplyStateModel extends ChangeNotifier{
   List<ApplyEntity> get acceptList => _acceptList;
   List<ApplyEntity> get refuseList => _refuseList;
 
-  get state => _allState&&_waitState&&_acceptState&&_refuseState;
+  get state => _allState&&_waitState&&_acceptState&&_refuseState;//所有列表是否加载完毕
   get hasAll => _allState;
   get hasWait => _waitState;
   get hasAccept => _acceptState;

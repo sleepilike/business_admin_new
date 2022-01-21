@@ -10,7 +10,7 @@ import 'package:registration_admin/ui/widget/header.dart';
 
 import '../../common/check.dart';
 import '../../config/const.dart';
-import '../mainpage/mainpage.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -44,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                       context, MaterialPageRoute(builder: (context) => MainPageBranch()));
                 });
               }
+              // 若没有登录
               return Container(
                 child: Column(
                     mainAxisSize: MainAxisSize.max,
